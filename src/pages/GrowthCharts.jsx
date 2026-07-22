@@ -199,8 +199,8 @@ function GrowthCharts() {
                   name="Tu bebé"
                   stroke="#A85D66"
                   strokeWidth={3}
-                  dot={{ r: 6, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
-                  activeDot={{ r: 8, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
+                  dot={{ r: 4.5, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
+                  activeDot={{ r: 6, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
                   connectNulls
                   isAnimationActive={false}
                 />
@@ -214,9 +214,8 @@ function GrowthCharts() {
                   name="Tu bebé"
                   stroke="#A85D66"
                   strokeWidth={3}
-                  dot={{ r: 6, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
+                  dot={{ r: 4.5, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
                   activeDot={false}
-                  connectNulls
                   isAnimationActive={false}
                 />
               )}
