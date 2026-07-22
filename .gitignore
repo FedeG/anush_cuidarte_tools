@@ -1,4 +1,5 @@
 node_modules/
 dist/
+.atl/
 .DS_Store
 *.local
