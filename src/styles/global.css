@@ -103,3 +103,33 @@ img {
 .bg-cream { background-color: var(--cream); }
 .bg-mint { background-color: var(--mint); }
 .bg-sky { background-color: var(--sky); }
+
+/* ========== TOGGLE BUTTONS ========== */
+.toggle-btn {
+  padding: 12px 24px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--text-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  outline: none;
+}
+.toggle-btn:hover {
+  border-color: var(--pink-light);
+}
+.toggle-btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(201,123,132,0.2);
+}
+.toggle-btn-active {
+  background: var(--gradient-pink);
+  color: white;
+  border-color: transparent;
+  box-shadow: var(--shadow-pink);
+}
+.toggle-btn-active:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201,123,132,0.5);
+}

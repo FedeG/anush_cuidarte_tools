@@ -143,11 +143,10 @@ function GrowthCharts() {
           <button
             key={opt.value}
             type="button"
-            className={`btn d-flex align-items-center gap-2 px-4 ${
-              gender === opt.value ? 'btn-primary' : 'btn-outline-secondary'
+            className={`toggle-btn d-flex align-items-center gap-2 px-4 ${
+              gender === opt.value ? 'toggle-btn-active' : ''
             }`}
             onClick={() => setGender(opt.value)}
-            style={gender !== opt.value ? { borderColor: '#e0e0e0', color: 'var(--text-body)' } : {}}
           >
             <i className={`bi ${opt.icon}`}></i>
             {opt.label}

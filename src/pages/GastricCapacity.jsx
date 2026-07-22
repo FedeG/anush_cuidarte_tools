@@ -168,29 +168,27 @@ function GastricCapacity() {
 
             <h5 className="fw-bold mb-3" style={{ color: 'var(--text-dark)' }}>Cálculo de capacidad</h5>
 
-            <div className="mb-3">
-              <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
-                Modo de cálculo
-              </label>
-              <div className="d-flex gap-2">
-                <button
-                  type="button"
-                  className={`btn flex-fill ${modoML === '150' ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  onClick={() => setModoML('150')}
-                  style={modoML !== '150' ? { borderColor: '#e0e0e0', color: 'var(--text-body)' } : {}}
-                >
-                  150 ml/kg/día
-                </button>
-                <button
-                  type="button"
-                  className={`btn flex-fill ${modoML === '200' ? 'btn-primary' : 'btn-outline-secondary'}`}
-                  onClick={() => setModoML('200')}
-                  style={modoML !== '200' ? { borderColor: '#e0e0e0', color: 'var(--text-body)' } : {}}
-                >
-                  200 ml/kg/día
-                </button>
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
+                  Modo de cálculo
+                </label>
+                <div className="toggle-group d-flex gap-2">
+                  <button
+                    type="button"
+                    className={`toggle-btn flex-fill ${modoML === '150' ? 'toggle-btn-active' : ''}`}
+                    onClick={() => setModoML('150')}
+                  >
+                    150 ml/kg/día
+                  </button>
+                  <button
+                    type="button"
+                    className={`toggle-btn flex-fill ${modoML === '200' ? 'toggle-btn-active' : ''}`}
+                    onClick={() => setModoML('200')}
+                  >
+                    200 ml/kg/día
+                  </button>
+                </div>
               </div>
-            </div>
 
             <hr className="my-3" />
 
