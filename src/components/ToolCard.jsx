@@ -2,7 +2,13 @@ import { useNavigate } from 'react-router-dom';
 
 function ToolCard({ tool }) {
   const navigate = useNavigate();
-  const isPink = tool.color === 'pink';
+
+  const colorMap = {
+    pink: { bg: 'var(--cream)', iconColor: 'var(--pink)' },
+    green: { bg: 'var(--mint)', iconColor: 'var(--green)' },
+    sky: { bg: 'var(--sky)', iconColor: '#5A7D9C' },
+  };
+  const colors = colorMap[tool.color] || { bg: 'var(--cream)', iconColor: 'var(--pink)' };
 
   return (
     <div
@@ -19,14 +25,14 @@ function ToolCard({ tool }) {
             width: 64,
             height: 64,
             borderRadius: 'var(--radius-md)',
-            background: isPink ? 'var(--cream)' : 'var(--mint)',
+            background: colors.bg,
           }}
         >
           <i
             className={`bi ${tool.icon}`}
             style={{
               fontSize: '2rem',
-              color: isPink ? 'var(--pink)' : 'var(--green)',
+              color: colors.iconColor,
             }}
           />
         </div>

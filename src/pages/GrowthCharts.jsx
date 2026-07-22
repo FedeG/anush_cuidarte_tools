@@ -16,6 +16,15 @@ const CHART_COLORS = [
   '#D4EDE0', '#A8D5BA', '#E9D5C8', '#C97B84', '#E9B4BB', '#B8C8DF', '#D4C8ED',
 ];
 
+function formatAge(months) {
+  const m = Math.floor(months);
+  const d = Math.round((months - m) * 30);
+  if (m === 0 && d === 0) return '0 meses';
+  if (m === 0) return `${d} días`;
+  if (d === 0) return `${m} ${m === 1 ? 'mes' : 'meses'}`;
+  return `${m} ${m === 1 ? 'mes' : 'meses'}, ${d} días`;
+}
+
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload) return null;
 
@@ -25,7 +34,7 @@ function CustomTooltip({ active, payload, label }) {
   return (
     <div className="card p-3 shadow-sm" style={{ fontSize: '0.85rem', minWidth: 160 }}>
       <div className="fw-bold mb-2" style={{ color: 'var(--text-dark)' }}>
-        Mes {label}
+        {formatAge(label)}
       </div>
       {percentileLines.map((entry, i) => (
         <div key={i} className="d-flex justify-content-between gap-3">
@@ -79,31 +88,45 @@ function GrowthCharts() {
   const [gender, setGender] = useState('boy');
   const [measurements, setMeasurements] = useState([]);
   const [newMonth, setNewMonth] = useState('');
+  const [newDay, setNewDay] = useState('');
   const [newWeight, setNewWeight] = useState('');
   const { exportToPng } = useExport();
 
-  // Merge baby measurements into chart data as a single series
+  // Build chart data: base percentile rows + baby measurement rows
   const chartData = useMemo(() => {
-    const data = gender === 'boy' ? whoBoysWeight : whoGirlsWeight;
-    return data.map((row) => {
-      const matching = measurements.find(m => Math.abs(m.month - row.month) < 0.01);
-      return {
-        ...row,
-        babyWeight: matching ? matching.weight : null,
-      };
+    const baseData = gender === 'boy' ? whoBoysWeight : whoGirlsWeight;
+    const data = baseData.map(row => ({ ...row, babyWeight: null }));
+
+    measurements.forEach(m => {
+      const age = m.month + (m.day || 0) / 30;
+      // If age matches an existing integer row, set babyWeight there
+      const existing = data.find(d => Math.abs(d.month - age) < 0.001);
+      if (existing) {
+        existing.babyWeight = m.weight;
+      } else {
+        data.push({ month: age, babyWeight: m.weight });
+      }
     });
+
+    return data.sort((a, b) => a.month - b.month);
   }, [gender, measurements]);
 
   const addMeasurement = () => {
-    const month = parseFloat(newMonth);
+    const month = parseInt(newMonth, 10) || 0;
+    const day = parseInt(newDay, 10) || 0;
     const weight = parseFloat(newWeight);
-    if (isNaN(month) || isNaN(weight) || month < 0 || month > 24 || weight <= 0) return;
+    const ageMonths = month + day / 30;
+
+    if (isNaN(weight) || month < 0 || month > 24 || day < 0 || day > 30 || weight <= 0) return;
+    if (month === 0 && day === 0) return;
+    if (month === 24 && day > 0) return;
 
     setMeasurements(prev => {
-      const updated = [...prev, { month, weight, id: Date.now() }];
-      return updated.sort((a, b) => a.month - b.month);
+      const updated = [...prev, { month, day, weight, id: Date.now(), ageMonths }];
+      return updated.sort((a, b) => a.ageMonths - b.ageMonths);
     });
     setNewMonth('');
+    setNewDay('');
     setNewWeight('');
   };
 
@@ -166,6 +189,7 @@ function GrowthCharts() {
                 tick={{ fontSize: 11, fill: '#999' }}
                 domain={[0, 24]}
                 ticks={[0, 2, 4, 6, 9, 12, 15, 18, 21, 24]}
+                allowDataOverflow={false}
               />
               <YAxis
                 label={{ value: 'Peso (kg)', angle: -90, position: 'insideLeft', style: { fontSize: 12, fill: '#999' } }}
@@ -216,6 +240,7 @@ function GrowthCharts() {
                   strokeWidth={3}
                   dot={{ r: 4.5, fill: '#A85D66', stroke: '#fff', strokeWidth: 2 }}
                   activeDot={false}
+                  connectNulls
                   isAnimationActive={false}
                 />
               )}
@@ -231,21 +256,37 @@ function GrowthCharts() {
             <h5 className="fw-bold mb-3" style={{ color: 'var(--text-dark)' }}>
               Agregar medición
             </h5>
-            <div className="mb-3">
-              <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
-                Edad <span className="text-muted fw-normal">(meses)</span>
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                placeholder="Ej: 3"
-                value={newMonth}
-                onChange={(e) => setNewMonth(e.target.value)}
-                onKeyDown={handleKeyDown}
-                min="0"
-                max="24"
-                step="0.5"
-              />
+            <div className="row g-2 mb-3">
+              <div className="col-6">
+                <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
+                  Meses
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="0"
+                  value={newMonth}
+                  onChange={(e) => setNewMonth(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  min="0"
+                  max="24"
+                />
+              </div>
+              <div className="col-6">
+                <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
+                  Días
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  placeholder="0"
+                  value={newDay}
+                  onChange={(e) => setNewDay(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  min="0"
+                  max="30"
+                />
+              </div>
             </div>
             <div className="mb-3">
               <label className="form-label fw-semibold" style={{ fontSize: '0.85rem' }}>
@@ -255,7 +296,7 @@ function GrowthCharts() {
                 <input
                   type="number"
                   className="form-control"
-                  placeholder="Ej: 6.5"
+                  placeholder="Ej: 3.5"
                   value={newWeight}
                   onChange={(e) => setNewWeight(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -269,7 +310,7 @@ function GrowthCharts() {
               type="button"
               className="btn btn-primary w-100"
               onClick={addMeasurement}
-              disabled={!newMonth || !newWeight}
+              disabled={!newWeight || (!newMonth && !newDay)}
             >
               <i className="bi bi-plus-circle me-2"></i>
               Agregar al gráfico
@@ -312,7 +353,7 @@ function GrowthCharts() {
                 <table className="table table-borderless mb-0" style={{ fontSize: '0.9rem' }}>
                   <thead>
                     <tr style={{ borderBottom: '2px solid var(--cream)' }}>
-                      <th className="text-muted fw-semibold">Edad (meses)</th>
+                      <th className="text-muted fw-semibold">Edad</th>
                       <th className="text-muted fw-semibold">Peso (kg)</th>
                       <th className="text-muted fw-semibold">Percentil</th>
                       <th></th>
@@ -320,11 +361,11 @@ function GrowthCharts() {
                   </thead>
                   <tbody>
                     {measurements.map((m) => {
-                      const pct = estimatePercentile(m.weight, m.month, gender === 'boy');
+                      const pct = estimatePercentile(m.weight, m.ageMonths, gender === 'boy');
                       const pctIdx = pct ? PERCENTILE_LABELS.indexOf(pct) : -1;
                       return (
                         <tr key={m.id} style={{ borderBottom: '1px solid var(--cream)' }}>
-                          <td className="fw-semibold">{m.month}</td>
+                          <td className="fw-semibold">{formatAge(m.ageMonths)}</td>
                           <td className="fw-semibold">{m.weight.toFixed(2)}</td>
                           <td>
                             <span

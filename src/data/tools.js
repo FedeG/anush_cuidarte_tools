@@ -13,6 +13,13 @@ const tools = [
     icon: 'bi-graph-up-arrow',
     color: 'green',
   },
+  {
+    slug: 'e-lactancia',
+    title: 'Buscar en e-lactancia',
+    description: 'Consultá la compatibilidad de medicamentos, plantas y otros productos con la lactancia.',
+    icon: 'bi-search-heart',
+    color: 'sky',
+  },
 ];
 
 export default tools;

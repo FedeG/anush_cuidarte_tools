@@ -144,10 +144,29 @@ export const PERCENTILE_COLORS = {
   P97: '#D4C8ED',
 };
 
-/** Estimate percentile for a given weight at a given age */
-export function estimatePercentile(weightKg, ageMonths, isBoy) {
+/** Interpolate percentile values at a given age (handles fractional months) */
+function interpolatePercentileValues(ageMonths, isBoy) {
   const data = isBoy ? whoBoysWeight : whoGirlsWeight;
-  const entry = data.find(d => d.month === Math.round(ageMonths));
+  if (ageMonths <= data[0].month) return data[0];
+  if (ageMonths >= data[data.length - 1].month) return data[data.length - 1];
+
+  const before = data.filter(d => d.month <= ageMonths);
+  const after = data.filter(d => d.month >= ageMonths);
+  const lo = before[before.length - 1];
+  const hi = after[0];
+  if (!lo || !hi || lo.month === hi.month) return lo || hi;
+
+  const t = (ageMonths - lo.month) / (hi.month - lo.month);
+  const entry = { month: ageMonths };
+  for (const p of PERCENTILES) {
+    entry[p] = lerp(lo[p], hi[p], t);
+  }
+  return entry;
+}
+
+/** Estimate percentile for a given weight at a given age (supports fractional months) */
+export function estimatePercentile(weightKg, ageMonths, isBoy) {
+  const entry = interpolatePercentileValues(ageMonths, isBoy);
   if (!entry) return null;
 
   // Find closest percentile
