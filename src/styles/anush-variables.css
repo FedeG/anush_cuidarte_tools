@@ -1,0 +1,126 @@
+/* ========================================
+   Anush Cuidarte — Design Tokens
+   Basado en: anush-cuidarte-app (Django) + anush_cuidarte_posts (React)
+   ======================================== */
+
+:root {
+  /* ========== PALETA PRIMARIA ========== */
+  --pink:         #C97B84;
+  --pink-dark:    #A85D66;
+  --pink-light:   #E9B4BB;
+  --green:        #7AB892;
+  --green-dark:   #5A9470;
+  --green-light:  #A8D5BA;
+
+  /* ========== NEUTROS ========== */
+  --bg:           #FDF8F5;   /* fondo general (blanco rubor) */
+  --bg-card:      #FFFFFF;
+  --text-dark:    #4A3B39;   /* títulos y texto principal */
+  --text-body:    #636E72;   /* texto secundario */
+  --text-muted:   #999999;
+  --text-footer:  rgba(255,255,255,0.9);
+
+  /* ========== PASTELES / FONDOS DE SECCIÓN ========== */
+  --cream:        #F0E0E2;
+  --mint:         #D4EDE0;
+  --sky:          #E0EEF6;
+
+  /* ========== FUNCIONALES ========== */
+  --footer-bg:    #7C4B44;
+  --success:      #7AB892;
+  --warning:      #E8C36D;
+  --danger:       #C62828;
+
+  /* ========== GRADIENTES ========== */
+  --gradient-pink:      linear-gradient(135deg, #C97B84, #A85D66);
+  --gradient-green:     linear-gradient(135deg, #7AB892, #5A9470);
+  --gradient-hero:      linear-gradient(180deg, #D4EDE0, #E0EEF6);
+  --gradient-card-top:  linear-gradient(90deg, #C97B84, #7AB892);
+
+  /* ========== SOMBRAS ========== */
+  --shadow-sm:    0 4px 10px rgba(0,0,0,0.08);
+  --shadow-md:    0 8px 24px rgba(0,0,0,0.10);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,0.14);
+  --shadow-pink:  0 4px 15px rgba(201,123,132,0.4);
+
+  /* ========== RADIOS ========== */
+  --radius-sm:    8px;
+  --radius-md:    16px;
+  --radius-lg:    24px;
+  --radius-xl:    32px;
+  --radius-full:  50px;
+
+  /* ========== LAYOUT ========== */
+  --max-width:    1200px;
+  --page-gutter:  20px;
+  --section-py:   80px;
+
+  /* ========== BOOTSTRAP OVERRIDES ========== */
+  --bs-primary: #C97B84;
+  --bs-primary-rgb: 201, 123, 132;
+  --bs-success: #7AB892;
+  --bs-success-rgb: 122, 184, 146;
+  --bs-body-color: #4A3B39;
+  --bs-body-bg: #FDF8F5;
+  --bs-border-radius: 24px;
+  --bs-border-radius-lg: 28px;
+  --bs-border-radius-sm: 8px;
+  --bs-border-radius-pill: 50px;
+}
+
+/* ========== BOOTSTRAP COMPONENT OVERRIDES ========== */
+
+.btn-primary {
+  background: var(--gradient-pink) !important;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  padding: 14px 32px !important;
+  box-shadow: var(--shadow-pink) !important;
+  font-weight: 600 !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201,123,132,0.5) !important;
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-success {
+  background: var(--gradient-green) !important;
+  border: none !important;
+  border-radius: var(--radius-full) !important;
+  padding: 14px 32px !important;
+  font-weight: 600 !important;
+}
+
+.card {
+  border: none !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+.form-control,
+.form-select {
+  border-radius: var(--radius-md) !important;
+  border: 1.5px solid #e0e0e0 !important;
+  padding: 12px 16px !important;
+  font-size: 1rem !important;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--pink) !important;
+  box-shadow: 0 0 0 3px rgba(201,123,132,0.15) !important;
+}
+
+.badge {
+  border-radius: var(--radius-full) !important;
+  padding: 6px 14px !important;
+  font-weight: 600 !important;
+}
