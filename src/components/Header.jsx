@@ -16,8 +16,9 @@ function Header({ showBack = false }) {
           )}
           <Link to="/" className="text-decoration-none">
             <h1 className="header-logo m-0">
-              <span className="header-logo-anush">Anush</span>{' '}
-              <span className="header-logo-tools">Tools</span>
+              <span className="header-logo-anush">Anush.</span>
+              <span className="header-logo-cuidarte">Cuidarte</span>
+              <span className="header-logo-tools ms-2">Tools</span>
             </h1>
           </Link>
         </div>
