@@ -19,6 +19,7 @@ const tools = [
     description: 'Consultá la compatibilidad de medicamentos, plantas y otros productos con la lactancia.',
     icon: 'bi-search-heart',
     color: 'sky',
+    externalUrl: 'https://e-lactancia.org',
   },
 ];
 

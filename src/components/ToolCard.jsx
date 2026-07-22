@@ -10,13 +10,25 @@ function ToolCard({ tool }) {
   };
   const colors = colorMap[tool.color] || { bg: 'var(--cream)', iconColor: 'var(--pink)' };
 
+  const handleClick = () => {
+    if (tool.externalUrl) {
+      window.open(tool.externalUrl, '_blank', 'noopener');
+    } else {
+      navigate(`/${tool.slug}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleClick();
+  };
+
   return (
     <div
       className="card tool-card h-100"
       role="button"
       tabIndex={0}
-      onClick={() => navigate(`/${tool.slug}`)}
-      onKeyDown={(e) => e.key === 'Enter' && navigate(`/${tool.slug}`)}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       <div className="card-body d-flex flex-column align-items-center text-center p-4">
         <div
