@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-const SEARCH_URL = 'https://e-lactancia.org/megasearch/';
+// CORS proxy porque e-lactancia.org no tiene CORS habilitado
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const SEARCH_BASE = 'https://e-lactancia.org/megasearch/';
 const BASE_URL = 'https://e-lactancia.org';
 
 function getDetailUrl(item) {
@@ -42,7 +44,7 @@ function ELactanciaSearch() {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${SEARCH_URL}?query=${encodeURIComponent(trimmed)}`);
+        const res = await fetch(`${CORS_PROXY}${encodeURIComponent(SEARCH_BASE + '?query=' + encodeURIComponent(trimmed))}`);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         const data = await res.json();
         setResults(data || []);
